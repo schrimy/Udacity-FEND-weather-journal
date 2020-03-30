@@ -1,6 +1,6 @@
 // Setup empty JS object to act as endpoint for all routes
 // Express to run server and routes
-
+let projectData = {};
 // Start up an instance of app
 const express = require('express');
 const app = express();
@@ -24,7 +24,22 @@ const server = app.listen(port, () => {
 });
 
 // Initialize all route with a callback function
-
+app.get('/all', getAll);
 // Callback function to complete GET '/all'
-
+function getAll(req, res) {
+  console.log('sending data');
+  res.send(projectData);
+}
 // Post Route
+app.post('/addEntry', (req, res) => {
+  console.log(req.body);
+
+  const newEntry = {
+    temp: req.body.temp,
+    date: req.body.temp,
+    userInput: req.body.userInput
+  };
+
+  projectData.push(newEntry);
+  res.send('post receieved');
+});
