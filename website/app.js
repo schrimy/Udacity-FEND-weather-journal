@@ -5,12 +5,16 @@ const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 document.getElementById('generate').addEventListener('click', generateEntry);
 /* Function called by event listener */
 function generateEntry(evt) {
+  console.log('generate!');
   const zipCode = document.getElementById('zip').value;
 
   getWeather(baseUrl, zipCode, apiKey)
   .then((data) => {
-    console.log('returned data: '+data.main.temp);
-  });
+    postData('/addEntry', {temp: data.main.temp, date: '30/03/2020', userInput: 'test input'});
+  })
+  .then(
+    console.log('update the ui then!')
+  );
 }
 /* Function to GET Web API Data*/
 const getWeather = async (url, zip, key) => {
@@ -25,6 +29,22 @@ const getWeather = async (url, zip, key) => {
 }
 
 /* Function to POST data */
+const postData = async (url = '', data = {}) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
 
+  try {
+    const newData = await res.json();
+    console.log('new data: '+newData);
+  } catch (e) {
+    console.log('error ', e);
+  }
+}
 
 /* Function to GET Project Data */
