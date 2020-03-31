@@ -1,6 +1,10 @@
 // Personal API Key for OpenWeatherMap API
 const apiKey = '&appid=80eaf3db70bd995b99c4d1224eb5278a';
 const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+/*Other globals*/
+const date = new Date();
+const readableDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+console.log('date:' + readableDate);
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', generateEntry);
 /* Function called by event listener */
@@ -10,7 +14,8 @@ function generateEntry(evt) {
 
   getWeather(baseUrl, zipCode, apiKey)
   .then((data) => {
-    postData('/addEntry', {temp: data.main.temp, date: '30/03/2020', userInput: 'test input'});
+    const userInput = document.getElementById('feelings').value;
+    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput});
   })
   .then(
     console.log('update the ui then!')
