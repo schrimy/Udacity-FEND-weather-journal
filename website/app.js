@@ -15,11 +15,11 @@ function generateEntry(evt) {
   getWeather(baseUrl, zipCode, apiKey)
   .then((data) => {
     const userInput = document.getElementById('feelings').value;
-    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput});
-  })
-  .then(
-    console.log('update the ui then!')
-  );
+    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput})
+    .then(
+      getEntries('/all')
+    )
+  });
 }
 /* Function to GET Web API Data*/
 const getWeather = async (url, zip, key) => {
@@ -53,3 +53,21 @@ const postData = async (url = '', data = {}) => {
 }
 
 /* Function to GET Project Data */
+const getEntries = async (url) => {
+  const res = await fetch(url);
+
+  try {
+    const entries = await res.json();
+    const numEntries = entries.length;
+    console.log('num of entries: '+numEntries);
+    for (let entry of entries) {
+      console.log('entry: '+entry.userInput);
+    }
+
+    document.getElementById('date').innerHTML = entries[numEntries - 1].date;
+    document.getElementById('temp').innerHTML = entries[numEntries - 1].temp;
+    document.getElementById('content').innerHTML = entries[numEntries - 1].userInput;
+  } catch (e) {
+    console.log('error', e);
+  }
+}

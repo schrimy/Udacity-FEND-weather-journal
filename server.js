@@ -38,7 +38,7 @@ app.post('/addEntry', (req, res) => {
     userInput: req.body.userInput
   };
 
-  console.log('entry: ' + newEntry.temp + ', ' + newEntry.date + ', ' + newEntry.userInput);
+  console.log('server entry: ' + newEntry.temp + ', ' + newEntry.date + ', ' + newEntry.userInput);
   projectData.push(newEntry);
   res.send(newEntry);
 });
