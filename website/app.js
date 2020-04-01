@@ -9,13 +9,19 @@ console.log('date:' + readableDate);
 document.getElementById('generate').addEventListener('click', generateEntry);
 /* Function called by event listener */
 function generateEntry(evt) {
-  console.log('generate!');
-  const zipCode = document.getElementById('zip').value;
-
-  getWeather(baseUrl, zipCode, apiKey)
+  const zipCode = document.getElementById('zip');
+  const userInput = document.getElementById('feelings');
+  /*check if zip and feelings have content*/
+  if (userInput.value === '' || zipCode.value === '') {
+    zipCode.classList.add('error-text');
+    userInput.classList.add('error-text');
+    alert('Please complete required fields in red!');
+    return;
+  }
+  /*grab weather and user data and eneter into array then display*/
+  getWeather(baseUrl, zipCode.value, apiKey)
   .then((data) => {
-    const userInput = document.getElementById('feelings').value;
-    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput})
+    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput.value})
     .then(
       getEntries('/all')
     )
@@ -73,3 +79,4 @@ const getEntries = async (url) => {
 }
 
 /*auto populate entry field if entries are avaialable*/
+getEntries('/all');
