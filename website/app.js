@@ -71,3 +71,5 @@ const getEntries = async (url) => {
     console.log('error', e);
   }
 }
+
+/*auto populate entry field if entries are avaialable*/
