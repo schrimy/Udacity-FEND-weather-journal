@@ -100,6 +100,7 @@ button {
 
 h1 {
     font-size: 36px;
+    margin: 0;
 }
 
 textarea {
@@ -180,5 +181,19 @@ button:focus {
 
   .entry {
     grid-area: ent;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  #app {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+    "hd ent prev"
+    "zip ent prev"
+    "feel ent prev";
+  }
+
+  .past-entries {
+    grid-area: prev;
   }
 }

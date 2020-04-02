@@ -20,7 +20,9 @@ function generateEntry(evt) {
   /*grab weather and user data and eneter into array then display*/
   getWeather(baseUrl, zipCode.value, apiKey)
   .then((data) => {
-    postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput.value})
+    postData('/addEntry', {temp: (data.main.temp - 273.15).toFixed(1) + '\xB0C',
+       date: readableDate,
+        userInput: userInput.value})
     .then(
       getEntries('/all')
       .then((array) => {
@@ -77,6 +79,10 @@ const getEntries = async (url) => {
 function showLatest(entries){
   const numEntries = entries.length;
 
+  if (numEntries === 0) {
+    return;
+  }
+
   document.querySelector('.title').innerHTML = 'Most Recent Entry';
 
   document.getElementById('date').innerHTML = entries[numEntries - 1].date;
@@ -85,14 +91,22 @@ function showLatest(entries){
 }
 
 function buildEntriesList(entriesList) {
+  const listContainer = document.querySelector('.past-entries');
   const listHolder = document.querySelector('.entry-list');
-  const listFrag = new DocumentFragment();
 
   if (entriesList === undefined) {
     return;
   }
 
-  listHolder.addEventListener('click', displayEntry);
+  /*hide entries list div if no current entries*/
+  if (entriesList.length === 0) {
+    listContainer.setAttribute('style', 'display: none');
+    return;
+  } else {
+    listContainer.removeAttribute('style');
+  }
+
+  const listFrag = new DocumentFragment();
 
   entriesList.forEach((entry) => {
     let item = document.createElement('li');
@@ -127,4 +141,6 @@ getEntries('/all')
   showLatest(data);
   /*call function to build list of entries*/
   buildEntriesList(data);
+  /*add entries list click listener here so it's not duplicated*/
+  document.querySelector('.entry-list').addEventListener('click', displayEntry);
 });
