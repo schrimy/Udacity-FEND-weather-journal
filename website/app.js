@@ -4,7 +4,6 @@ const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 /*Other globals*/
 const date = new Date();
 const readableDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-console.log('date:' + readableDate);
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', generateEntry);
 /* Function called by event listener */
@@ -24,6 +23,9 @@ function generateEntry(evt) {
     postData('/addEntry', {temp: data.main.temp, date: readableDate, userInput: userInput.value})
     .then(
       getEntries('/all')
+      .then((array) => {
+        showLatest(array);
+      })
     )
   });
 }
@@ -53,6 +55,8 @@ const postData = async (url = '', data = {}) => {
   try {
     const newData = await res.json();
     console.log('new data: '+newData);
+    const newEntry = [newData];
+    buildEntriesList(newEntry);
   } catch (e) {
     console.log('error ', e);
   }
@@ -64,19 +68,63 @@ const getEntries = async (url) => {
 
   try {
     const entries = await res.json();
-    const numEntries = entries.length;
-    console.log('num of entries: '+numEntries);
-    for (let entry of entries) {
-      console.log('entry: '+entry.userInput);
-    }
-
-    document.getElementById('date').innerHTML = entries[numEntries - 1].date;
-    document.getElementById('temp').innerHTML = entries[numEntries - 1].temp;
-    document.getElementById('content').innerHTML = entries[numEntries - 1].userInput;
+    return(entries);
   } catch (e) {
     console.log('error', e);
   }
 }
 
+function showLatest(entries){
+  const numEntries = entries.length;
+
+  document.querySelector('.title').innerHTML = 'Most Recent Entry';
+
+  document.getElementById('date').innerHTML = entries[numEntries - 1].date;
+  document.getElementById('temp').innerHTML = entries[numEntries - 1].temp;
+  document.getElementById('content').innerHTML = entries[numEntries - 1].userInput;
+}
+
+function buildEntriesList(entriesList) {
+  const listHolder = document.querySelector('.entry-list');
+  const listFrag = new DocumentFragment();
+
+  if (entriesList === undefined) {
+    return;
+  }
+
+  listHolder.addEventListener('click', displayEntry);
+
+  entriesList.forEach((entry) => {
+    let item = document.createElement('li');
+    item.innerText = `${entry.date}, ${entry.temp}, ${entry.userInput}`;
+    item.setAttribute('id', `${entry.id}`);
+
+    listFrag.appendChild(item);
+  });
+
+  listHolder.appendChild(listFrag);
+}
+
+/*callback for past entry click event to display that entry*/
+function displayEntry(e) {
+  if (e.target.nodeName.toLowerCase() === 'li') {
+    const target = e.target.id;
+
+    getEntries('/all')
+    .then((array) => {
+      document.querySelector('.title').innerHTML = 'Previous Post';
+
+      document.getElementById('date').innerHTML = array[target].date;
+      document.getElementById('temp').innerHTML = array[target].temp;
+      document.getElementById('content').innerHTML = array[target].userInput;
+    });
+  }
+}
+
 /*auto populate entry field if entries are avaialable*/
-getEntries('/all');
+getEntries('/all')
+.then((data) => {
+  showLatest(data);
+  /*call function to build list of entries*/
+  buildEntriesList(data);
+});

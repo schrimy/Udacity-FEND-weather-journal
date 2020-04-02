@@ -1,6 +1,9 @@
 // Setup empty JS object to act as endpoint for all routes
 // Express to run server and routes
 projectData = [];
+/*globals*/
+//array reference for each entry
+let entryNum = 0;
 // Start up an instance of app
 const express = require('express');
 const app = express();
@@ -35,10 +38,12 @@ app.post('/addEntry', (req, res) => {
   const newEntry = {
     temp: req.body.temp,
     date: req.body.date,
-    userInput: req.body.userInput
+    userInput: req.body.userInput,
+    id: entryNum
   };
 
-  console.log('server entry: ' + newEntry.temp + ', ' + newEntry.date + ', ' + newEntry.userInput);
+  //increment entry reference number for later referal
+  entryNum++;
   projectData.push(newEntry);
   res.send(newEntry);
 });
