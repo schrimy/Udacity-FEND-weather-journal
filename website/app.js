@@ -96,7 +96,7 @@ function buildEntriesList(entriesList) {
 
   entriesList.forEach((entry) => {
     let item = document.createElement('li');
-    item.innerText = `${entry.date}, ${entry.temp}, ${entry.userInput}`;
+    item.innerText = `${entry.date}, ${entry.temp}, ${entry.userInput.slice(0, 15) + '...'}`;
     item.setAttribute('id', `${entry.id}`);
 
     listFrag.appendChild(item);
@@ -112,7 +112,7 @@ function displayEntry(e) {
 
     getEntries('/all')
     .then((array) => {
-      document.querySelector('.title').innerHTML = 'Previous Post';
+      document.querySelector('.title').innerHTML = 'Selected Entry';
 
       document.getElementById('date').innerHTML = array[target].date;
       document.getElementById('temp').innerHTML = array[target].temp;
