@@ -186,7 +186,7 @@ button:focus {
 
 @media only screen and (min-width: 1200px) {
   #app {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 2fr 1fr;
     grid-template-areas:
     "hd ent prev"
     "zip ent prev"
