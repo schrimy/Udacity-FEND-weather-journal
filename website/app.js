@@ -116,7 +116,7 @@ function buildEntriesList(entriesList) {
 
   entriesList.forEach((entry) => {
     let item = document.createElement('li');
-    item.innerText = `${entry.date}, ${entry.place} `;
+    item.innerText = `${entry.date}, ${entry.place}, `;
     //shorten the feelings text to fit if 7 characters or over
     if (entry.userInput.length >= 7) {
       item.innerText += `${entry.userInput.slice(0, 7) + '...'}`;

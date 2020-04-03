@@ -37,7 +37,8 @@ li {
 
 .entry {
     background: rgba(59, 74, 107, 0.4);
-    padding: 5px 0 0 10px;
+    padding: 5px 10px;
+    width: 300px;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
@@ -165,6 +166,7 @@ button:focus {
 
   .entry {
     grid-area: ent;
+    width: auto;
   }
 }
 
