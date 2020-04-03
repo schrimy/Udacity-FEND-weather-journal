@@ -33,6 +33,7 @@ function generateEntry(evt) {
     )
   });
 }
+
 /* Function to GET Web API Data*/
 const getWeather = async (url, zip, key) => {
   const res = await fetch(url+zip+key);
@@ -58,11 +59,10 @@ const postData = async (url = '', data = {}) => {
 
   try {
     const newData = await res.json();
-    console.log('new data: '+newData);
     const newEntry = [newData];
     buildEntriesList(newEntry);
   } catch (e) {
-    console.log('error ', e);
+    console.log('error', e);
   }
 }
 
@@ -78,26 +78,27 @@ const getEntries = async (url) => {
   }
 }
 
+/*Show latest entry when page is opened, if there are any*/
 function showLatest(entries){
   const numEntries = entries.length;
-
+  //if there are no current entries, exit this function
   if (numEntries === 0) {
     return;
   }
-
+  //otherwise get last entry from passed array
   const entryItem = entries[numEntries - 1];
 
   document.querySelector('.title').innerHTML = 'Most Recent Entry';
-
   document.getElementById('date').innerHTML = entryItem.date + ' - ' + entryItem.place;
   document.getElementById('temp').innerHTML = entryItem.weather + ' - ' + entryItem.temp;
   document.getElementById('content').innerHTML = entryItem.userInput;
 }
 
+/*crete and build previous entries field into UI*/
 function buildEntriesList(entriesList) {
   const listContainer = document.querySelector('.past-entries');
   const listHolder = document.querySelector('.entry-list');
-
+  //if there is an error for previous entries exit from function
   if (entriesList === undefined) {
     return;
   }
@@ -109,7 +110,8 @@ function buildEntriesList(entriesList) {
   } else {
     listContainer.removeAttribute('style');
   }
-
+  //if there are previous entries run through array of entries passed in and
+  //build a list item for each and add to 'ul' in html
   const listFrag = new DocumentFragment();
 
   entriesList.forEach((entry) => {
@@ -121,7 +123,7 @@ function buildEntriesList(entriesList) {
     } else {
       item.innerText += `${entry.userInput}`;
     }
-
+    //set id attribute for reference if clicked
     item.setAttribute('id', `${entry.id}`);
     listFrag.appendChild(item);
   });
@@ -129,7 +131,7 @@ function buildEntriesList(entriesList) {
   listHolder.appendChild(listFrag);
 }
 
-/*callback for past entry click event to display that entry*/
+/*callback for previous entry click event to display that entry*/
 function displayEntry(e) {
   if (e.target.nodeName.toLowerCase() === 'li') {
     const target = e.target.id;

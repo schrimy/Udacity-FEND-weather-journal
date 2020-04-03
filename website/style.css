@@ -35,36 +35,9 @@ li {
     font-family: 'Oswald', sans-serif;
 }
 
-.holder{
-
-}
-
 .entry {
-    background: rgba(59, 74, 107, .4);
+    background: rgba(59, 74, 107, 0.4);
     padding: 5px 0 0 10px;
-}
-
-#entryHolder{
-
-}
-
-#date{
-
-}
-
-#temp{
-
-}
-
-#content{
-
-}
-
-.headline {
-
-}
-.title{
-
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
@@ -113,6 +86,7 @@ textarea {
     border: none;
     padding: 0 5px;
 }
+
 /* Reset style for HTML element on active to have no border*/
 input:focus,
 select:focus,
@@ -120,6 +94,7 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
 /* Style for Placeholder Text*/
 ::placeholder { /* Firefox, Chrome, Opera */
     color: #f0d43a;
@@ -140,12 +115,21 @@ button:focus {
 }
 
 /*placeholder class to turn red if not value is entered*/
-.error-text::placeholder {
+.error-text::placeholder { /* Firefox, Chrome, Opera */
   color: red;
 }
 
+.error-text:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: red;
+}
+
+.error-text::-ms-input-placeholder { /* Microsoft Edge */
+  color: red;
+}
+
+/*Change layout for medium screens*/
 @media only screen and (min-width: 768px) {
-  #app{
+  #app {
       display: grid;
       grid-template-rows: repeat(3, auto);
       /* grid-template-columns:  */
@@ -184,6 +168,7 @@ button:focus {
   }
 }
 
+/*Change layout for XL screens*/
 @media only screen and (min-width: 1200px) {
   #app {
     grid-template-columns: auto 2fr 1fr;

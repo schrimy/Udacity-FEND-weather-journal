@@ -30,7 +30,6 @@ const server = app.listen(port, () => {
 app.get('/all', getAll);
 // Callback function to complete GET '/all'
 function getAll(req, res) {
-  console.log('sending data');
   res.send(projectData);
 }
 // Post Route
