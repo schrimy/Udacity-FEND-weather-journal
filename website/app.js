@@ -21,8 +21,10 @@ function generateEntry(evt) {
   getWeather(baseUrl, zipCode.value, apiKey)
   .then((data) => {
     postData('/addEntry', {temp: (data.main.temp - 273.15).toFixed(1) + '\xB0C',
-       date: readableDate,
-        userInput: userInput.value})
+    date: readableDate,
+    userInput: userInput.value,
+    weather: data.weather[0].description,
+    place: data.name})
     .then(
       getEntries('/all')
       .then((array) => {
@@ -83,11 +85,13 @@ function showLatest(entries){
     return;
   }
 
+  const entryItem = entries[numEntries - 1];
+
   document.querySelector('.title').innerHTML = 'Most Recent Entry';
 
-  document.getElementById('date').innerHTML = entries[numEntries - 1].date;
-  document.getElementById('temp').innerHTML = entries[numEntries - 1].temp;
-  document.getElementById('content').innerHTML = entries[numEntries - 1].userInput;
+  document.getElementById('date').innerHTML = entryItem.date + ' - ' + entryItem.place;
+  document.getElementById('temp').innerHTML = entryItem.weather + ' - ' + entryItem.temp;
+  document.getElementById('content').innerHTML = entryItem.userInput;
 }
 
 function buildEntriesList(entriesList) {
@@ -110,9 +114,15 @@ function buildEntriesList(entriesList) {
 
   entriesList.forEach((entry) => {
     let item = document.createElement('li');
-    item.innerText = `${entry.date}, ${entry.temp}, ${entry.userInput.slice(0, 15) + '...'}`;
-    item.setAttribute('id', `${entry.id}`);
+    item.innerText = `${entry.date}, ${entry.place} `;
+    //shorten the feelings text to fit if 7 characters or over
+    if (entry.userInput.length >= 7) {
+      item.innerText += `${entry.userInput.slice(0, 7) + '...'}`;
+    } else {
+      item.innerText += `${entry.userInput}`;
+    }
 
+    item.setAttribute('id', `${entry.id}`);
     listFrag.appendChild(item);
   });
 
@@ -128,8 +138,8 @@ function displayEntry(e) {
     .then((array) => {
       document.querySelector('.title').innerHTML = 'Selected Entry';
 
-      document.getElementById('date').innerHTML = array[target].date;
-      document.getElementById('temp').innerHTML = array[target].temp;
+      document.getElementById('date').innerHTML = array[target].date + ' - ' + array[target].place;
+      document.getElementById('temp').innerHTML = array[target].weather + ' - ' + array[target].temp;
       document.getElementById('content').innerHTML = array[target].userInput;
     });
   }

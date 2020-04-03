@@ -39,6 +39,8 @@ app.post('/addEntry', (req, res) => {
     temp: req.body.temp,
     date: req.body.date,
     userInput: req.body.userInput,
+    weather: req.body.weather,
+    place: req.body.place,
     id: entryNum
   };
 
