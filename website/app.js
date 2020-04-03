@@ -31,6 +31,9 @@ function generateEntry(evt) {
         showLatest(array);
       })
     )
+  })
+  .catch(err => {
+    alert('Please check Zipcode')
   });
 }
 
