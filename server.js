@@ -9,7 +9,8 @@ const express = require('express');
 const app = express();
 /* Dependencies */
 /* Middleware*/
-
+const dotenv = require('dotenv');
+dotenv.config();
 //Here we are configuring express to use body-parser as middle-ware.
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,7 +22,10 @@ app.use(cors());
 app.use(express.static('website'));
 // Spin up the server
 // Callback to debug
-const port = 3030;
+const port = process.env.PORT;
+if(port == null || port == '') {
+  port = 3030;
+};
 const server = app.listen(port, () => {
   console.log(`server running on localhost: ${port}`);
 });
@@ -43,8 +47,12 @@ app.post('/addEntry', (req, res) => {
     id: projectData.length
   };
 
-  //increment entry reference number for later referal
-  //entryNum++;
   projectData.push(newEntry);
   res.send(newEntry);
 });
+
+//return hidden api key
+app.get('/apiKey', (req, res) => {
+  const apiKey = { key: process.env.API_KEY }
+  res.send(apiKey)
+})

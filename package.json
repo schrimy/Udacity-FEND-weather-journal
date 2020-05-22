@@ -1,0 +1,23 @@
+{
+  "name": "weather-journal",
+  "version": "1.0.0",
+  "description": "Udacity FEND project 3",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spazy-t/udacity-weather-journal.git"
+  },
+  "author": "Tom Schrimshaw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spazy-t/udacity-weather-journal/issues"
+  },
+  "homepage": "https://github.com/spazy-t/udacity-weather-journal#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}

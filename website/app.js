@@ -1,5 +1,4 @@
 // Personal API Key for OpenWeatherMap API
-const apiKey = '&appid=80eaf3db70bd995b99c4d1224eb5278a';
 const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 /*Other globals*/
 let entriesArr = [];
@@ -19,28 +18,42 @@ function generateEntry(evt) {
     return;
   }
   /*grab weather and user data and eneter into array then display*/
-  getWeather(baseUrl, zipCode.value, apiKey)
-  .then((data) => {
-    postData('/addEntry', {temp: (data.main.temp - 273.15).toFixed(1) + '\xB0C',
-    date: readableDate,
-    userInput: userInput.value,
-    weather: data.weather[0].description,
-    place: data.name})
-    .then(
-      getEntries('/all')
-      .then((array) => {
-        showLatest(array);
-      })
-    )
+  getApiKey('/apiKey')
+  .then((key) => {
+    getWeather(baseUrl+zipCode.value+key)
+    .then((data) => {
+      postData('/addEntry', {temp: (data.main.temp - 273.15).toFixed(1) + '\xB0C',
+      date: readableDate,
+      userInput: userInput.value,
+      weather: data.weather[0].description,
+      place: data.name})
+      .then(
+        getEntries('/all')
+        .then((array) => {
+          showLatest(array);
+        })
+      )
+    })
   })
   .catch(err => {
     alert('Please check Zipcode')
   });
 }
 
-/* Function to GET Web API Data*/
-const getWeather = async (url, zip, key) => {
-  const res = await fetch(url+zip+key);
+const getApiKey = async (url) => {
+  const res = await fetch(url);
+
+  try {
+    const apiKey = await res.json();
+    return apiKey.key;
+  } catch (e) {
+    console.log('error', e);
+  }
+}
+
+/* Function to get Web API Data*/
+const getWeather = async (url) => {
+  const res = await fetch(url);
 
   try {
     const data = await res.json();
@@ -140,7 +153,6 @@ function buildEntriesList(entriesList) {
 function displayEntry(e) {
   if (e.target.nodeName.toLowerCase() === 'li') {
     const target = e.target.id;
-
     
     document.querySelector('.title').innerHTML = 'Selected Entry';
 
