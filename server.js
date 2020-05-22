@@ -3,7 +3,7 @@
 projectData = [];
 /*globals*/
 //array reference for each entry
-let entryNum = 0;
+//let entryNum = 0;
 // Start up an instance of app
 const express = require('express');
 const app = express();
@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.static('website'));
 // Spin up the server
 // Callback to debug
-const port = 3000;
+const port = 3030;
 const server = app.listen(port, () => {
   console.log(`server running on localhost: ${port}`);
 });
@@ -40,11 +40,11 @@ app.post('/addEntry', (req, res) => {
     userInput: req.body.userInput,
     weather: req.body.weather,
     place: req.body.place,
-    id: entryNum
+    id: projectData.length
   };
 
   //increment entry reference number for later referal
-  entryNum++;
+  //entryNum++;
   projectData.push(newEntry);
   res.send(newEntry);
 });

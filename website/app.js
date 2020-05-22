@@ -2,6 +2,7 @@
 const apiKey = '&appid=80eaf3db70bd995b99c4d1224eb5278a';
 const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 /*Other globals*/
+let entriesArr = [];
 const date = new Date();
 const readableDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
 // Event listener to add function to existing HTML DOM element
@@ -75,6 +76,7 @@ const getEntries = async (url) => {
 
   try {
     const entries = await res.json();
+    entriesArr = entries;
     return(entries);
   } catch (e) {
     console.log('error', e);
@@ -139,14 +141,12 @@ function displayEntry(e) {
   if (e.target.nodeName.toLowerCase() === 'li') {
     const target = e.target.id;
 
-    getEntries('/all')
-    .then((array) => {
-      document.querySelector('.title').innerHTML = 'Selected Entry';
+    
+    document.querySelector('.title').innerHTML = 'Selected Entry';
 
-      document.getElementById('date').innerHTML = array[target].date + ' - ' + array[target].place;
-      document.getElementById('temp').innerHTML = array[target].weather + ' - ' + array[target].temp;
-      document.getElementById('content').innerHTML = array[target].userInput;
-    });
+    document.getElementById('date').innerHTML = entriesArr[target].date + ' - ' + entriesArr[target].place;
+    document.getElementById('temp').innerHTML = entriesArr[target].weather + ' - ' + entriesArr[target].temp;
+    document.getElementById('content').innerHTML = entriesArr[target].userInput;
   }
 }
 
