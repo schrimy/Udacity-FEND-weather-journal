@@ -30,6 +30,10 @@ const server = app.listen(port, () => {
   console.log(`server running on localhost: ${port}`);
 });
 
+app.get('/', function (req, res) {
+  res.sendFile('website/index.html')
+})
+
 // Initialize all route with a callback function
 app.get('/all', getAll);
 // Callback function to complete GET '/all'
