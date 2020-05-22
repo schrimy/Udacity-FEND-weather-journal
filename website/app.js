@@ -76,8 +76,6 @@ const postData = async (url = '', data = {}) => {
 
   try {
     const newData = await res.json();
-    const newEntry = [newData];
-    buildEntriesList(newEntry);
   } catch (e) {
     console.log('error', e);
   }
@@ -105,6 +103,7 @@ function showLatest(entries){
   }
   //otherwise get last entry from passed array
   const entryItem = entries[numEntries - 1];
+  buildEntriesList([entryItem]);
 
   document.querySelector('.title').innerHTML = 'Most Recent Entry';
   document.getElementById('date').innerHTML = entryItem.date + ' - ' + entryItem.place;
