@@ -1,5 +1,5 @@
 // Personal API Key for OpenWeatherMap API
-const baseUrl = 'http://api.openweathermap.org/data/2.5/weather?zip=';
+const baseUrl = 'https://api.openweathermap.org/data/2.5/weather?zip=';
 /*Other globals*/
 let entriesArr = [];
 const date = new Date();
