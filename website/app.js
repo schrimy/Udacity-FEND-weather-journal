@@ -76,6 +76,7 @@ const postData = async (url = '', data = {}) => {
 
   try {
     const newData = await res.json();
+    return newData;
   } catch (e) {
     console.log('error', e);
   }
